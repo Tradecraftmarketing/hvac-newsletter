@@ -1,2 +1,39 @@
-# hvac-newsletter
-Automated HVAC industry newsletter system
+name: HVAC Newsletter Generator
+
+on:
+  schedule:
+    # Run every day at 6:00 AM UTC (adjust for your timezone)
+    - cron: '0 6 * * *'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  generate-newsletter:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run newsletter generator
+      run: python src/newsletter_generator.py
+      env:
+        BEEHIIV_API_KEY: ${{ secrets.BEEHIIV_API_KEY }}
+        BEEHIIV_PUBLICATION_ID: ${{ secrets.BEEHIIV_PUBLICATION_ID }}
+        
+    - name: Commit updated data
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/processed_articles.json
+        git diff --staged --quiet || git commit -m "Update processed articles data"
+        git push
