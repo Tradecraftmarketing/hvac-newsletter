@@ -267,19 +267,23 @@ class HVACNewsletterGenerator:
         }
         
         payload = {
-            'subject': subject,
-            'content': content,
-            'status': 'confirmed',  # Auto-send
-            'content_type': 'html'
+            'title': subject,
+            'content_html': content,
+            'status': 'draft',  # Create as draft first
+            'audience': 'free'
         }
         
         try:
             response = requests.post(url, headers=headers, json=payload)
+            print(f"Beehiiv API Response Status: {response.status_code}")
+            print(f"Beehiiv API Response: {response.text}")
             response.raise_for_status()
             print("Newsletter sent successfully to Beehiiv!")
             return True
         except requests.exceptions.RequestException as e:
             print(f"Error sending to Beehiiv: {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"Response content: {e.response.text}")
             return False
 
     def run(self):
