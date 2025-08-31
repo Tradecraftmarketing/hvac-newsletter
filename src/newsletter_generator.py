@@ -340,7 +340,7 @@ self.mailchimp_server = self.mailchimp_api_key.split('-')[-1] if self.mailchimp_
         
         # 5. Send to Beehiiv
         subject = f"HVAC Daily Brief - {datetime.now().strftime('%B %d, %Y')}"
-        success = self.send_to_beehiiv(subject, newsletter_html)
+       success = self.send_to_mailchimp(subject, newsletter_html)
         
         if success:
             # 6. Save processed article hashes
