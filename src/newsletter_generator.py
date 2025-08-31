@@ -254,7 +254,7 @@ class HVACNewsletterGenerator:
         
         return html_content
 
-       def send_to_mailchimp(self, subject: str, content: str) -> bool:
+    def send_to_mailchimp(self, subject: str, content: str) -> bool:
         """Send newsletter to Mailchimp"""
         if not self.mailchimp_api_key or not self.mailchimp_audience_id:
             print("Mailchimp API credentials not configured")
