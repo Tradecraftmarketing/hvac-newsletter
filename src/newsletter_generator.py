@@ -28,8 +28,9 @@ class Article:
 
 class HVACNewsletterGenerator:
     def __init__(self):
-        self.beehiiv_api_key = os.getenv('BEEHIIV_API_KEY')
-        self.beehiiv_publication_id = os.getenv('BEEHIIV_PUBLICATION_ID')
+       self.mailchimp_api_key = os.getenv('MAILCHIMP_API_KEY')
+self.mailchimp_audience_id = os.getenv('MAILCHIMP_AUDIENCE_ID')
+self.mailchimp_server = self.mailchimp_api_key.split('-')[-1] if self.mailchimp_api_key else None
         
         # HVAC RSS feeds
         self.rss_feeds = {
