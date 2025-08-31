@@ -254,39 +254,64 @@ self.mailchimp_server = self.mailchimp_api_key.split('-')[-1] if self.mailchimp_
         
         return html_content
 
-    def send_to_beehiiv(self, subject: str, content: str) -> bool:
-        """Send newsletter to Beehiiv"""
-        if not self.beehiiv_api_key or not self.beehiiv_publication_id:
-            print("Beehiiv API credentials not configured")
+     def send_to_mailchimp(self, subject: str, content: str) -> bool:
+        """Send newsletter to Mailchimp"""
+        if not self.mailchimp_api_key or not self.mailchimp_audience_id:
+            print("Mailchimp API credentials not configured")
             return False
         
-        url = f"https://api.beehiiv.com/v2/publications/{self.beehiiv_publication_id}/posts"
+        url = f"https://{self.mailchimp_server}.api.mailchimp.com/3.0/campaigns"
         
         headers = {
-            'Authorization': f'Bearer {self.beehiiv_api_key}',
+            'Authorization': f'Bearer {self.mailchimp_api_key}',
             'Content-Type': 'application/json'
         }
         
-        payload = {
-            'title': subject,
-            'content_html': content,
-            'status': 'draft',  # Create as draft first
-            'audience': 'free'
+        # Create campaign
+        campaign_payload = {
+            'type': 'regular',
+            'recipients': {
+                'list_id': self.mailchimp_audience_id
+            },
+            'settings': {
+                'subject_line': subject,
+                'title': f"HVAC Newsletter {datetime.now().strftime('%Y-%m-%d')}",
+                'from_name': 'HVAC Daily Brief',
+                'reply_to': self.mailchimp_api_key.split('-')[0] + '@gmail.com'  # Use your email
+            }
         }
         
         try:
-            response = requests.post(url, headers=headers, json=payload)
-            print(f"Beehiiv API Response Status: {response.status_code}")
-            print(f"Beehiiv API Response: {response.text}")
+            # Create campaign
+            response = requests.post(url, headers=headers, json=campaign_payload)
+            print(f"Campaign creation status: {response.status_code}")
             response.raise_for_status()
-            print("Newsletter sent successfully to Beehiiv!")
+            
+            campaign_data = response.json()
+            campaign_id = campaign_data['id']
+            
+            # Add content to campaign
+            content_url = f"https://{self.mailchimp_server}.api.mailchimp.com/3.0/campaigns/{campaign_id}/content"
+            content_payload = {
+                'html': content
+            }
+            
+            content_response = requests.put(content_url, headers=headers, json=content_payload)
+            content_response.raise_for_status()
+            
+            # Send campaign
+            send_url = f"https://{self.mailchimp_server}.api.mailchimp.com/3.0/campaigns/{campaign_id}/actions/send"
+            send_response = requests.post(send_url, headers=headers)
+            send_response.raise_for_status()
+            
+            print("Newsletter sent successfully via Mailchimp!")
             return True
+            
         except requests.exceptions.RequestException as e:
-            print(f"Error sending to Beehiiv: {e}")
+            print(f"Error sending to Mailchimp: {e}")
             if hasattr(e, 'response') and e.response is not None:
                 print(f"Response content: {e.response.text}")
             return False
-
     def run(self):
         """Main execution pipeline"""
         print("Starting HVAC Newsletter Generation...")
