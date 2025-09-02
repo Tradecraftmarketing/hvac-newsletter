@@ -277,7 +277,8 @@ class HVACNewsletterGenerator:
                 'subject_line': subject,
                 'title': f"HVAC-Brief-Auto-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
                 'from_name': 'HVAC Daily Brief',
-                'reply_to': self.mailchimp_api_key.split('-')[0] + '@gmail.com'  # Use your email
+                'reply_to': 'tradecraftmarketinghvac@gmail.com',
+                'auto_send': True
             }
         }
         
