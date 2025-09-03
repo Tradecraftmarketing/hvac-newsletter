@@ -300,12 +300,7 @@ class HVACNewsletterGenerator:
             # Add content to campaign
             content_url = f"https://{self.mailchimp_server}.api.mailchimp.com/3.0/campaigns/{campaign_id}/content"
             content_payload = {
-                'template': {
-                    'id': 10574878,
-                    'sections': {
-                        'main_content': content
-                    }
-                }
+                'html': content
             }
             
             content_response = requests.put(content_url, headers=headers, json=content_payload)
