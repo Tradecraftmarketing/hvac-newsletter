@@ -34,11 +34,18 @@ class HVACNewsletterGenerator:
         
         # HVAC RSS feeds
         self.rss_feeds = {
-            'ACHR News': 'https://www.achrnews.com/rss.xml',
-            'Contracting Business': 'https://www.contractingbusiness.com/rss.xml',
-            'Supply House Times': 'https://www.supplyht.com/rss.xml',
-            'HVAC.com': 'https://www.hvac.com/feed/',
+            'ACHR News': 'https://www.achrnews.com/rss/articles',
+            'Supply House Times': 'https://www.supplyht.com/rss/17',
             'Facility Executive': 'https://facilityexecutive.com/category/hvac/feed/',
+            'HVAC Insider': 'https://hvacinsider.com/feed/',
+            'Mechanical Business': 'https://www.mechanicalbusiness.com/rss',
+            'High Performance HVAC': 'https://hpacmag.com/feed/',
+            'HVAC P': 'https://hvacpproducts.com/feed/',
+            'Contracting Business': 'https://www.contractingbusiness.com/rss.xml'
+            'Engineered Systems': 'https://www.esmagazine.com/rss/articles'
+            'ACCA': 'https://hvac-blog.acca.org/feed/'
+            'Control Trends': 'https://controltrends.org/feed/'
+            'Consulting Specifying Engineer': 'https://www.csemag.com/feed/'
         }
         
         # File paths
