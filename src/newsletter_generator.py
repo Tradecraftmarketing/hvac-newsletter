@@ -216,7 +216,7 @@ class HVACNewsletterGenerator:
 
     def generate_newsletter_html(self, articles: List[Article]) -> str:
         """Generate HTML newsletter content"""
-        
+    
         # Group articles by category
         categorized = {}
         for article in articles[:20]:  # Limit to top 20
@@ -224,10 +224,15 @@ class HVACNewsletterGenerator:
             if category not in categorized:
                 categorized[category] = []
             categorized[category].append(article)
-        
+    
         html_content = f"""
-        <h1>HVAC Industry Daily Brief - {datetime.now().strftime('%B %d, %Y')}</h1>
-        <p>Your curated selection of the latest HVAC industry news and insights.</p>
+        <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
+            <div style="background-color: #007acc; color: white; padding: 20px; text-align: center;">
+                <h1 style="margin: 0; font-size: 24px;">HVAC Brief</h1>
+                <p style="margin: 5px 0 0 0; font-size: 14px;">Daily Industry Insights - {datetime.now().strftime('%B %d, %Y')}</p>
+            </div>
+            <div style="padding: 20px; background-color: #ffffff;">
+                <p style="color: #666; margin-bottom: 30px;">Your curated selection of the latest HVAC industry news and insights.</p>
         """
         
         for category, cat_articles in categorized.items():
