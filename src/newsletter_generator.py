@@ -283,10 +283,12 @@ class HVACNewsletterGenerator:
             'settings': {
                 'subject_line': subject,
                 'title': f"HVAC-Brief-Auto-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
-                'from_name': 'HVAC Daily Brief',
-                'reply_to': 'tradecraftmarketinghvac@gmail.com',
-                'template_id': 10574878,
-                'auto_send': True
+                'from_name': 'HVAC Brief',
+                'reply_to': 'tradecraftmarketinghvac@gmail.com'
+            },
+            'content_type': 'template',
+            'template': {
+                'id': 10574878
             }
         }
         
