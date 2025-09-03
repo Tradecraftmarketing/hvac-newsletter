@@ -41,11 +41,11 @@ class HVACNewsletterGenerator:
             'Mechanical Business': 'https://www.mechanicalbusiness.com/rss',
             'High Performance HVAC': 'https://hpacmag.com/feed/',
             'HVAC P': 'https://hvacpproducts.com/feed/',
-            'Contracting Business': 'https://www.contractingbusiness.com/rss.xml'
-            'Engineered Systems': 'https://www.esmagazine.com/rss/articles'
-            'ACCA': 'https://hvac-blog.acca.org/feed/'
-            'Control Trends': 'https://controltrends.org/feed/'
-            'Consulting Specifying Engineer': 'https://www.csemag.com/feed/'
+            'Contracting Business': 'https://www.contractingbusiness.com/rss.xml',
+            'Engineered Systems': 'https://www.esmagazine.com/rss/articles',
+            'ACCA': 'https://hvac-blog.acca.org/feed/',
+            'Control Trends': 'https://controltrends.org/feed/',
+            'Consulting Specifying Engineer': 'https://www.csemag.com/feed/',
         }
         
         # File paths
