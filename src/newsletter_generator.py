@@ -151,15 +151,47 @@ class HVACNewsletterGenerator:
         return 'General'
 
     def clean_summary(self, summary: str) -> str:
-        """Clean and truncate article summary"""
-        # Remove HTML tags
-        clean_text = re.sub(r'<[^>]+>', '', summary)
-        
-        # Limit to ~150 characters
-        if len(clean_text) > 150:
-            clean_text = clean_text[:147] + '...'
-        
+    """Clean and intelligently truncate article summary"""
+    import re
+    
+    # Remove HTML tags
+    clean_text = re.sub(r'<[^>]+>', '', summary)
+    
+    # Remove extra whitespace and normalize
+    clean_text = ' '.join(clean_text.split())
+    
+    # If it's already short enough, return as-is
+    if len(clean_text) <= 300:
         return clean_text.strip()
+    
+    # Try to find a good stopping point (end of sentence)
+    # Look for sentence endings within a reasonable range (200-350 characters)
+    for length in range(300, 200, -10):  # Work backwards from 300 to 200
+        if length >= len(clean_text):
+            return clean_text.strip()
+        
+        # Check if this position ends a sentence
+        if clean_text[length] in '.!?':
+            # Make sure it's not an abbreviation (like "U.S." or "Inc.")
+            if not (length > 0 and clean_text[length-1].isupper() and length < len(clean_text) - 1):
+                return clean_text[:length+1].strip()
+    
+    # If we can't find a good sentence ending, look for other breaks
+    for length in range(300, 200, -10):
+        if length >= len(clean_text):
+            return clean_text.strip()
+        
+        # Check for paragraph breaks, commas after words, etc.
+        if clean_text[length] in ',;:' and clean_text[length+1] == ' ':
+            return clean_text[:length+1].strip() + ".."
+    
+    # Last resort: cut at word boundary and add ellipsis
+    truncated = clean_text[:300]
+    last_space = truncated.rfind(' ')
+    if last_space > 200:  # Make sure we don't cut too short
+        return truncated[:last_space].strip() + "..."
+    
+    return truncated.strip() + "..."
 
     def fetch_all_articles(self) -> List[Article]:
         """Fetch articles from all RSS feeds"""
